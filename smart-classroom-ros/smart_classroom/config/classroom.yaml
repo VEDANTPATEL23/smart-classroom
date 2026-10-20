@@ -1,0 +1,38 @@
+# Every tunable value, grouped by the node that reads it. These replace config.py.
+
+camera:
+  index: 0
+  width: 640
+  height: 480
+  fps: 15.0
+  warmup_frames: 15        # thrown away while auto-exposure settles
+  frame_id: camera
+
+detector:
+  confidence: 0.45
+  image_size: 416          # smaller = faster and blinder; 320 or 416 suit a CPU
+  classes: [person, cell phone]
+  detect_every_n_frames: 1 # raise to 2 or 3 if the VM cannot keep up
+  zone_left_edge: 0.33
+  zone_right_edge: 0.66
+
+monitor:
+  zone_left_edge: 0.33
+  zone_right_edge: 0.66
+  warning_confirm_frames: 3    # consecutive phone frames before WARNING
+  normal_confirm_frames: 12    # consecutive clean frames before NORMAL
+  alert_event_count: 3         # WARNING events inside the window -> ALERT
+  alert_window_seconds: 60.0
+  command_cooldown: 4.0        # minimum seconds between arm commands
+  auto_point_at_zone: true
+  drive_arm: true              # false = publish classroom_state only
+
+arm_driver:
+  port: ""                 # "" = find the Arduino by USB vendor id
+  baud: 9600
+  simulate: auto           # true / false / auto (real board if found, else simulated)
+  boot_wait: 2.5           # the Uno resets when the port opens
+  serial_timeout: 1.0
+  move_timeout: 10.0       # presets and SET reply only after the arm arrives
+  assist_timeout: 25.0
+  reconnect_period: 5.0

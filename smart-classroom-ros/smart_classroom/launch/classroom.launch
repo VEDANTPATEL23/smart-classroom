@@ -1,0 +1,48 @@
+<launch>
+  <!-- Where the images come from. With use_webcam:=false, point image_topic at
+       any sensor_msgs/Image source, e.g. /rover/camera/image_raw from Gazebo. -->
+  <arg name="use_webcam"   default="true"/>
+  <arg name="camera_index" default="0"/>
+  <arg name="image_topic"  default="camera/image_raw"/>
+
+  <!-- ROS in WSL cannot open a webcam: set net_camera:=true and run
+       scripts/windows_webcam_sender.py on Windows to stream it in instead. -->
+  <arg name="net_camera" default="false"/>
+  <arg name="net_port"   default="5600"/>
+
+  <!-- Arm: "" auto-detects the port; simulate is true / false / auto -->
+  <arg name="port"     default=""/>
+  <arg name="simulate" default="auto"/>
+
+  <!-- Open a window on the annotated video -->
+  <arg name="view" default="true"/>
+
+  <group ns="classroom">
+    <rosparam command="load" file="$(find smart_classroom)/config/classroom.yaml"/>
+
+    <node if="$(eval use_webcam and not net_camera)" name="camera" pkg="smart_classroom"
+          type="camera_node.py" output="screen">
+      <param name="index" value="$(arg camera_index)"/>
+    </node>
+
+    <node if="$(arg net_camera)" name="camera" pkg="smart_classroom"
+          type="net_camera_node.py" output="screen">
+      <param name="net_port" value="$(arg net_port)"/>
+    </node>
+
+    <node name="detector" pkg="smart_classroom" type="detector_node.py" output="screen">
+      <param name="model" value="$(find smart_classroom)/models/yolov8n.pt"/>
+      <remap from="image" to="$(arg image_topic)"/>
+    </node>
+
+    <node name="monitor" pkg="smart_classroom" type="classroom_monitor_node.py" output="screen"/>
+
+    <node name="arm_driver" pkg="smart_classroom" type="arm_driver_node.py" output="screen">
+      <param name="port" type="str" value="$(arg port)"/>
+      <param name="simulate" type="str" value="$(arg simulate)"/>
+    </node>
+
+    <node if="$(arg view)" name="view" pkg="rqt_image_view" type="rqt_image_view"
+          args="/classroom/image_annotated"/>
+  </group>
+</launch>

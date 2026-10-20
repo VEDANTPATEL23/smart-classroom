@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C / C++ compiled binaries
+*.obj
+*.o
+*.a
+*.lib
+*.so
+*.dylib
+*.exe
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ROS build and devel artifacts
+devel/
+build/
+install/
+log/
+.catkin_workspace
+.catkin_tools/
+
+# Arduino build artifacts
+*.hex
+*.elf
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local machine configs
+config_local.py

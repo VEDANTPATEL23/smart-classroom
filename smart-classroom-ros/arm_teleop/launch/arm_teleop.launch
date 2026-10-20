@@ -1,0 +1,23 @@
+<launch>
+  <arg name="port"    default="/dev/ttyACM0"/>
+  <arg name="joy_dev" default="/dev/input/js0"/>
+
+  <group ns="arm">
+    <node name="joy" pkg="joy" type="joy_node" output="screen">
+      <param name="dev" value="$(arg joy_dev)"/>
+      <param name="deadzone" value="0.0"/>
+      <!-- joy_node only publishes when something changes. Repeating lets the
+           teleop node tell a held stick from a dead joystick. -->
+      <param name="autorepeat_rate" value="20.0"/>
+    </node>
+
+    <node name="arm_teleop" pkg="arm_teleop" type="arm_teleop_node.py" output="screen">
+      <rosparam command="load" file="$(find arm_teleop)/config/arm.yaml"/>
+    </node>
+
+    <node name="arm_driver" pkg="arm_teleop" type="arm_serial_driver.py" output="screen">
+      <rosparam command="load" file="$(find arm_teleop)/config/arm.yaml"/>
+      <param name="port" value="$(arg port)"/>
+    </node>
+  </group>
+</launch>

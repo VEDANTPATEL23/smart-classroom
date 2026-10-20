@@ -1,0 +1,22 @@
+# virtual environment
+venv/
+.venv/
+
+# python
+__pycache__/
+*.pyc
+
+# YOLO weights (downloaded on first run, not committed)
+*.pt
+models/*.pt
+
+# local machine config
+config_local.py
+
+# captures
+!screenshots/*.png
+!screenshots/.gitkeep
+
+# build artefacts
+tests/*.exe
+tests/*.o

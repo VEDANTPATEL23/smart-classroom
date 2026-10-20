@@ -1,0 +1,5 @@
+# One line of the sketch's serial protocol, e.g. HOME, ASSIST, SET ELBOW 120.
+string command
+---
+bool success
+string message

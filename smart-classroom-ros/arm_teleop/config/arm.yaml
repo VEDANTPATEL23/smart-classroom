@@ -1,0 +1,24 @@
+# Loaded into both nodes. The limits and start pose match trailass.ino - if you
+# change them there, change them here too.
+joints:
+  names:    [base, pivot, elbow, end_effector]
+  min_deg:  [0,   110, 110, 95]
+  max_deg:  [180, 180, 180, 140]
+  home_deg: [90,  145, 145, 118]
+
+# --- teleop only ---------------------------------------------------------
+# Joy axis driving each joint, in the order above:
+#   left X -> base, left Y -> pivot, right Y -> elbow, right X -> end effector
+# These are the indices joystick_test.py used. Controllers that report the
+# triggers as axes put the right stick on 3 and 4 instead - check with
+# `rostopic echo /arm/joy` and use [0, 1, 4, 3] if so.
+axes: [0, 1, 3, 2]
+
+# The joy node reports left and up as +1, pygame reported right and down as +1.
+# -1 keeps every joint moving the way it did under joystick_test.py.
+scale: [-1, -1, -1, -1]
+
+speed_deg_s: [60, 45, 45, 45]
+deadzone: 0.12
+joy_timeout: 0.5     # seconds without a Joy message before the arm holds
+rate: 50.0
